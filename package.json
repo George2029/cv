@@ -5,15 +5,11 @@
   "type": "module",
   "scripts": {
     "build": "esbuild src/index.ts --bundle --platform=node --format=esm --outfile=dist/server.mjs",
-    "composer:deploy": "prisma deploy module.ts",
-    "composer:dev": "prisma dev module.ts",
     "contract:emit": "prisma contract emit",
     "db:init": "prisma db init",
     "db:update": "prisma db update",
     "db:verify": "prisma db verify",
-    "deploy": "npm run build && npm run composer:deploy",
     "dev": "tsx watch src/index.ts",
-    "dev:composer": "npm run build && npm run composer:dev",
     "migrate": "prisma db migrate",
     "migration:plan": "prisma migration plan",
     "migration:show": "prisma migration show",
@@ -23,13 +19,17 @@
     "postinstall": "prisma skills sync || exit 0"
   },
   "dependencies": {
-    "@prisma/composer": "0.16.0",
-    "@prisma/composer-prisma-cloud": "0.16.0",
     "@prisma/orm-postgres": "8.0.0-rc.8",
-    "alchemy": "2.0.0-beta.74",
+    "dataloader": "^2.2.3",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "graphql": "^17.0.2",
+    "graphql-http": "^1.23.0",
+    "ruru": "^2.0.1",
     "temporal-polyfill": "^1.0.4"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "@types/node": "^25.6.2",
     "esbuild": "^0.28.1",
     "prisma": "8.0.0-rc.12",

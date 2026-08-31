@@ -1,21 +1,29 @@
 // use prisma-next
 
-model User {
+model Skill {
   id        Int      @id @default(autoincrement())
-  email     String   @unique
-  username  String?
-  name      String?
-  posts     Post[]
-  createdAt TimestamptzString @default(now())
-  updatedAt temporal.updatedAtString()
+  name      String   @unique
+  notes     Note[]
+  createdAt TimestamptzString @default(now()) @map("created_at")
+  updatedAt temporal.updatedAtString() @map("updated_at")
 }
 
-model Post {
+model Note {
   id        Int      @id @default(autoincrement())
   title     String
   content   String?
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
-  createdAt TimestamptzString @default(now())
-  updatedAt temporal.updatedAtString()
+  skill     Skill     @relation(fields: [skillId], references: [id])
+  skillId   Int
+  createdAt TimestamptzString @default(now()) @map("created_at")
+  updatedAt temporal.updatedAtString() @map("updated_at")
+}
+
+model WorkExperience {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String?
+  createdAt TimestamptzString @default(now()) @map("created_at")
+  updatedAt temporal.updatedAtString() @map("updated_at")
+
+  @@map("work_experience") 
 }

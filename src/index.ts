@@ -1,19 +1,128 @@
-import { createServer } from "node:http";
+import {
+  GraphQLString,
+  GraphQLSchema,
+  GraphQLObjectType,
+  GraphQLInt,
+  GraphQLList,
+} from "graphql";
+import DataLoader from "dataloader";
+import { createHandler } from "graphql-http/lib/use/express";
+import express from "express";
+import { ruruHTML } from "ruru/server";
+import { fetchSkills, type Skill } from "./fetchers/skills";
+import { fetchNotes, type Note } from "./fetchers/notes";
 
-import { listUsers } from "./prisma/users";
+const app = express();
 
-const port = Number(process.env.PORT ?? 3000);
+function createContext() {
+  return {
+    skillLoader: new DataLoader(async (ids: readonly number[]) => {
+      const skills = await fetchSkills(ids);
+      return ids.map((id) => skills.find((skill) => skill.id === id));
+    }),
+  };
+}
 
-createServer(async (_request, response) => {
-  try {
-    const users = await listUsers();
-    response.writeHead(200, { "content-type": "application/json" });
-    response.end(JSON.stringify({ users }));
-  } catch (error) {
-    console.error("Failed to query users:", error);
-    response.writeHead(500, { "content-type": "application/json" });
-    response.end(JSON.stringify({ error: "Could not query users yet." }));
-  }
-}).listen(port, "0.0.0.0", () => {
-  console.log(`Server running at http://localhost:${port}`);
+const Skill = new GraphQLObjectType({
+  name: "skill",
+  fields: () => ({
+    id: {
+      type: GraphQLInt,
+    },
+    name: {
+      type: GraphQLString,
+    },
+    createdAt: {
+      type: GraphQLString,
+    },
+    updatedAt: {
+      type: GraphQLString,
+    },
+  }),
+});
+
+const Note = new GraphQLObjectType({
+  name: "note",
+  fields: () => ({
+    id: {
+      type: GraphQLInt,
+    },
+    skillId: {
+      type: GraphQLInt,
+    },
+    content: {
+      type: GraphQLString,
+    },
+    title: {
+      type: GraphQLString,
+    },
+    skill: {
+      type: Skill,
+      resolve: (note, _args, context) => {
+        return context.skillLoader.load(note.skillId);
+      },
+    },
+    createdAt: {
+      type: GraphQLString,
+    },
+    updatedAt: {
+      type: GraphQLString,
+    },
+  }),
+});
+
+const Query = new GraphQLObjectType({
+  name: "someQueryName",
+  fields: () => ({
+    greeting: {
+      type: GraphQLString,
+      resolve: () => "Hello",
+    },
+    notes: {
+      type: new GraphQLList(Note),
+      args: {
+        ids: {
+          type: new GraphQLList(GraphQLInt),
+        },
+      },
+      resolve: (_source, args) => fetchNotes(args.ids),
+    },
+    skills: {
+      type: new GraphQLList(Skill),
+      args: {
+        ids: {
+          type: new GraphQLList(GraphQLInt),
+        },
+      },
+      resolve: async (_source, args) => {
+        const result = await fetchSkills(args.ids);
+        console.log("result:", result);
+        return result;
+      },
+    },
+  }),
+});
+
+const schema = new GraphQLSchema({
+  description: "The application schema.",
+  query: Query,
+});
+
+app.post(
+  "/graphql",
+  createHandler({
+    schema,
+    context: () => createContext(),
+  }),
+);
+
+const PORT = 4000;
+
+app.get("/", (_req, res) => {
+  res.type("html");
+  res.end(ruruHTML({ endpoint: "/graphql" }));
+});
+
+app.listen(PORT, () => {
+  console.log(`listening on localhost:${PORT}`);
 });

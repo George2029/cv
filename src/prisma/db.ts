@@ -1,31 +1,18 @@
 import postgres from "@prisma/orm-postgres/runtime";
+import dotenv from "dotenv";
+dotenv.config();
 
 import "temporal-polyfill/global";
 
-import service from "../../service.ts";
 import type { Contract } from "./contract.d.ts";
 import contractJson from "./contract.json" with { type: "json" };
 
-function loadComposerDatabase() {
-  try {
-    return service.load().database.client;
-  } catch {
-    return undefined;
-  }
+console.log("process.env.DATABASE_URL:", process.env.DATABASE_URL);
+if (!process.env.DATABASE_URL) {
+  console.log("database url is not defined as env");
+  process.exit(1);
 }
-
-export const db =
-  loadComposerDatabase() ??
-  (process.env.DATABASE_URL
-    ? postgres<Contract>({ contractJson, url: process.env.DATABASE_URL })
-    : postgres<Contract>({ contractJson }));
-
-let connection: Promise<void> | undefined;
-
-export function connectDatabase(): Promise<void> {
-  connection ??= db.connect().then(() => undefined).catch((error: unknown) => {
-    connection = undefined;
-    throw error;
-  });
-  return connection;
-}
+export const db = postgres<Contract>({
+  contractJson,
+  url: process.env.DATABASE_URL,
+});

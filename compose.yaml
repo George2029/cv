@@ -1,0 +1,27 @@
+services:
+  backend:
+    container_name: my-backend
+    build:
+      context: .
+    env_file:
+      - ./.prod.env
+    ports:
+      - 3000:3000
+    networks:
+      - my-network
+
+  db:
+    image: dhi.io/postgres:18-alpine3.23-dev
+    container_name: my-database
+    env_file:
+      - ./.prod.env
+    volumes:
+      - db-volume:/var/lib/postgresql/18/data
+    networks:
+      - my-network
+
+volumes:
+  db-volume:
+
+networks:
+  my-network:

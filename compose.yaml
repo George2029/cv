@@ -11,12 +11,12 @@ services:
       - my-network
 
   db:
-    image: dhi.io/postgres:18-alpine3.23-dev
+    image: postgres:17-alpine
     container_name: my-database
     env_file:
       - ./.prod.env
     volumes:
-      - db-volume:/var/lib/postgresql/18/data
+      - db-volume:/var/lib/postgresql/data
     networks:
       - my-network
 

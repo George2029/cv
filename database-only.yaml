@@ -1,14 +1,13 @@
 services:
   db:
-    image: dhi.io/postgres:18-alpine3.23-dev
+    image: postgres:17-alpine
     container_name: database-only
     env_file:
       - ./.prod.env
     ports:
       - 4444:5432
     volumes:
-      - db-volume:/var/lib/postgresql/18/data
+      - db-volume:/var/lib/postgresql/data
 
 volumes:
   db-volume:
-

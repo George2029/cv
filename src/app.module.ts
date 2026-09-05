@@ -3,6 +3,7 @@ import { GraphQLModule } from "@nestjs/graphql";
 import { ApolloDriver, type ApolloDriverConfig } from "@nestjs/apollo";
 import { SkillsModule } from "./skills/skills.module";
 import { PrismaModule } from "./prisma/prisma.module";
+import { join } from "node:path";
 
 @Module({
   imports: [
@@ -10,7 +11,7 @@ import { PrismaModule } from "./prisma/prisma.module";
     SkillsModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: true,
+      autoSchemaFile: join(process.cwd(), "src/schema.gql"),
     }),
   ],
 })

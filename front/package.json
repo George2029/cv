@@ -1,0 +1,35 @@
+{
+  "name": "front",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "relay": "relay-compiler",
+    "relay:watch": "relay-compiler --watch",
+    "build": "relay-compiler && vite build",
+    "start": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@rolldown/plugin-babel": "^0.2.3",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "babel-plugin-relay": "^21.0.1",
+    "graphql": "^17.0.2",
+    "relay-compiler": "^21.0.1",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2"
+  },
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-relay": "^21.0.1",
+    "relay-runtime": "^21.0.1"
+  }
+}

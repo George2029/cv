@@ -6,17 +6,17 @@
     "build": "nest build",
     "start": "node dist/server.mjs",
 
-    "contract:emit": "export $(cat .env) && prisma contract emit",
-    "db:init": "export $(cat .env)  && prisma db init",
-    "db:update": "export $(cat .env) && prisma db update",
-    "db:verify": "export $(cat .env) && prisma db verify",
-    "migrate": "export $(cat .env) && prisma db migrate",
-    "seed-default": "export $(cat .env) && tsx src/seeds/seedAll.ts",
-    "migration:plan": "export $(cat .env) && prisma migration plan",
-    "migration:show": "export $(cat .env) && prisma migration show",
-    "migration:status": "export $(cat .env) && prisma migration status",
-    "skills:sync": "export $(cat .env) && prisma skills sync || exit 0",
-    "postinstall": "export $(cat .env) && prisma skills sync || exit 0"
+    "contract:emit": "export $(cat .local.env) && prisma contract emit",
+    "db:init": "export $(cat .local.env)  && prisma db init",
+    "db:update": "export $(cat .local.env) && prisma db update",
+    "db:verify": "export $(cat .local.env) && prisma db verify",
+    "migrate": "export $(cat .local.env) && prisma db migrate",
+    "seed-default": "export $(cat .local.env) && tsx src/seeds/seedAll.ts",
+    "migration:plan": "export $(cat .local.env) && prisma migration plan",
+    "migration:show": "export $(cat .local.env) && prisma migration show",
+    "migration:status": "export $(cat .local.env) && prisma migration status",
+    "skills:sync": "export $(cat .local.env) && prisma skills sync || exit 0",
+    "postinstall": "export $(cat .local.env) && prisma skills sync || exit 0"
   },
   "dependencies": {
     "@apollo/server": "^5.5.1",

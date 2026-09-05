@@ -25,9 +25,11 @@ services:
     build:
       context: ./front
     ports:
-      - 3001:3001
+      - 3000:3000
     networks:
       - my-network
+    environment:
+      - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx
     volumes:
       - ./front/templates:/etc/nginx/templates:ro
     depends_on:

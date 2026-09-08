@@ -3,4 +3,4 @@ dist/
 *.env
 /.alchemy
 /.prisma-composer
-front/nginx.prod.conf.template
+front/nginx_template

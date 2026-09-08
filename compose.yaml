@@ -33,7 +33,7 @@ services:
     environment:
       - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx
     volumes:
-      - ${NGINX_TEMPLATE_DIR:-./front/templates/dev}:/etc/nginx/templates:ro
+      - ${NGINX_TEMPLATE_DIR:-./front/nginx_template}:/etc/nginx/templates:ro
       - ${LETSENCRYPT_DIR:-./front/empty}:/etc/letsencrypt:ro
     depends_on:
       - db

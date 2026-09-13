@@ -27,9 +27,11 @@
     "vite": "^8.2.2"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.3.3",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-relay": "^21.0.1",
-    "relay-runtime": "^21.0.1"
+    "relay-runtime": "^21.0.1",
+    "tailwindcss": "^4.3.3"
   }
 }

@@ -1,0 +1,259 @@
+[
+  {
+    "id": "schema.public",
+    "label": "Create schema \"public\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres"
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "Create schema \"public\"",
+        "sql": "CREATE SCHEMA IF NOT EXISTS \"public\"",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "table.note",
+    "label": "Create table \"note\"",
+    "summary": "Creates table \"note\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "note"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"note\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"note\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"note\"",
+        "sql": "CREATE TABLE \"public\".\"note\" (\n  \"content\" text,\n  \"created_at\" timestamptz DEFAULT (now()) NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"skillId\" int4 NOT NULL,\n  \"title\" text NOT NULL,\n  \"updated_at\" timestamptz NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"note\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"note\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.skill",
+    "label": "Create table \"skill\"",
+    "summary": "Creates table \"skill\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "skill"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"skill\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"skill\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"skill\"",
+        "sql": "CREATE TABLE \"public\".\"skill\" (\n  \"created_at\" timestamptz DEFAULT (now()) NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"name\" text NOT NULL,\n  \"updated_at\" timestamptz NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"skill\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"skill\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.work_experience",
+    "label": "Create table \"work_experience\"",
+    "summary": "Creates table \"work_experience\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "work_experience"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"work_experience\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"work_experience\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"work_experience\"",
+        "sql": "CREATE TABLE \"public\".\"work_experience\" (\n  \"content\" text,\n  \"created_at\" timestamptz DEFAULT (now()) NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"title\" text NOT NULL,\n  \"updated_at\" timestamptz NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"work_experience\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"work_experience\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.skill.skill_name_key",
+    "label": "Add unique constraint on \"skill\" (name)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "skill_name_key",
+        "table": "skill"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"skill_name_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "skill_name_key",
+          "public",
+          "\"public\".\"skill\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"skill_name_key\"",
+        "sql": "ALTER TABLE \"public\".\"skill\" ADD CONSTRAINT \"skill_name_key\" UNIQUE (\"name\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"skill_name_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "skill_name_key",
+          "public",
+          "\"public\".\"skill\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.note.note_skillId_idx_6e19993d",
+    "label": "Create index \"note_skillId_idx_6e19993d\" on \"note\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "note_skillId_idx_6e19993d",
+        "table": "note"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"note_skillId_idx_6e19993d\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"note_skillId_idx_6e19993d\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"note_skillId_idx_6e19993d\"",
+        "sql": "CREATE INDEX \"note_skillId_idx_6e19993d\" ON \"public\".\"note\" (\"skillId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"note_skillId_idx_6e19993d\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"note_skillId_idx_6e19993d\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.note.note_skillId_fkey",
+    "label": "Add foreign key \"note_skillId_fkey\" on \"note\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "note_skillId_fkey",
+        "table": "note"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"note_skillId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "note_skillId_fkey",
+          "public",
+          "\"public\".\"note\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"note_skillId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"note\"\nADD CONSTRAINT \"note_skillId_fkey\"\nFOREIGN KEY (\"skillId\")\nREFERENCES \"public\".\"skill\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"note_skillId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "note_skillId_fkey",
+          "public",
+          "\"public\".\"note\""
+        ]
+      }
+    ]
+  }
+]

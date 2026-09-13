@@ -1,4 +1,6 @@
 {
-  "hash": "6d52b54af719cd6ecb2148a8b4d0ae020d327855a39bcf6adbc14a8ad8e9c993",
-  "invariants": []
+  "hash": "74f17ae5699a4d2d6cfe865312fd18a507e4ecc5e31eadbfc4b1da16d4cc32f5",
+  "invariants": [
+    "reorder_tables_and_seed_skills"
+  ]
 }

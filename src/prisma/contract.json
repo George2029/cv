@@ -4,16 +4,16 @@
   "target": "postgres",
   "profileHash": "3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2",
   "roots": {
-    "note": {
-      "model": "Note",
+    "job": {
+      "model": "Job",
       "namespace": "public"
     },
     "skill": {
       "model": "Skill",
       "namespace": "public"
     },
-    "work_experience": {
-      "model": "WorkExperience",
+    "skill_experience": {
+      "model": "SkillExperience",
       "namespace": "public"
     }
   },
@@ -21,16 +21,23 @@
     "namespaces": {
       "public": {
         "models": {
-          "Note": {
+          "Job": {
             "fields": {
               "content": {
-                "nullable": true,
+                "nullable": false,
                 "type": {
                   "codecId": "pg/text@1",
                   "kind": "scalar"
                 }
               },
               "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "endedAt": {
                 "nullable": false,
                 "type": {
                   "codecId": "pg/timestamptz-string@1",
@@ -44,157 +51,10 @@
                   "kind": "scalar"
                 }
               },
-              "skillId": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/int4@1",
-                  "kind": "scalar"
-                }
-              },
-              "title": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/text@1",
-                  "kind": "scalar"
-                }
-              },
-              "updatedAt": {
+              "startedAt": {
                 "nullable": false,
                 "type": {
                   "codecId": "pg/timestamptz-string@1",
-                  "kind": "scalar"
-                }
-              }
-            },
-            "relations": {
-              "skill": {
-                "cardinality": "N:1",
-                "on": {
-                  "localFields": [
-                    "skillId"
-                  ],
-                  "targetFields": [
-                    "id"
-                  ]
-                },
-                "to": {
-                  "model": "Skill",
-                  "namespace": "public"
-                }
-              }
-            },
-            "storage": {
-              "fields": {
-                "content": {
-                  "column": "content"
-                },
-                "createdAt": {
-                  "column": "created_at"
-                },
-                "id": {
-                  "column": "id"
-                },
-                "skillId": {
-                  "column": "skillId"
-                },
-                "title": {
-                  "column": "title"
-                },
-                "updatedAt": {
-                  "column": "updated_at"
-                }
-              },
-              "namespaceId": "public",
-              "table": "note"
-            }
-          },
-          "Skill": {
-            "fields": {
-              "createdAt": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/timestamptz-string@1",
-                  "kind": "scalar"
-                }
-              },
-              "id": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/int4@1",
-                  "kind": "scalar"
-                }
-              },
-              "name": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/text@1",
-                  "kind": "scalar"
-                }
-              },
-              "updatedAt": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/timestamptz-string@1",
-                  "kind": "scalar"
-                }
-              }
-            },
-            "relations": {
-              "notes": {
-                "cardinality": "1:N",
-                "on": {
-                  "localFields": [
-                    "id"
-                  ],
-                  "targetFields": [
-                    "skillId"
-                  ]
-                },
-                "to": {
-                  "model": "Note",
-                  "namespace": "public"
-                }
-              }
-            },
-            "storage": {
-              "fields": {
-                "createdAt": {
-                  "column": "created_at"
-                },
-                "id": {
-                  "column": "id"
-                },
-                "name": {
-                  "column": "name"
-                },
-                "updatedAt": {
-                  "column": "updated_at"
-                }
-              },
-              "namespaceId": "public",
-              "table": "skill"
-            }
-          },
-          "WorkExperience": {
-            "fields": {
-              "content": {
-                "nullable": true,
-                "type": {
-                  "codecId": "pg/text@1",
-                  "kind": "scalar"
-                }
-              },
-              "createdAt": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/timestamptz-string@1",
-                  "kind": "scalar"
-                }
-              },
-              "id": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/int4@1",
                   "kind": "scalar"
                 }
               },
@@ -222,8 +82,14 @@
                 "createdAt": {
                   "column": "created_at"
                 },
+                "endedAt": {
+                  "column": "ended_at"
+                },
                 "id": {
                   "column": "id"
+                },
+                "startedAt": {
+                  "column": "started_at"
                 },
                 "title": {
                   "column": "title"
@@ -233,7 +99,170 @@
                 }
               },
               "namespaceId": "public",
-              "table": "work_experience"
+              "table": "job"
+            }
+          },
+          "Skill": {
+            "fields": {
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "level": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "name": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {},
+            "storage": {
+              "fields": {
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "level": {
+                  "column": "level"
+                },
+                "name": {
+                  "column": "name"
+                },
+                "updatedAt": {
+                  "column": "updated_at"
+                }
+              },
+              "namespaceId": "public",
+              "table": "skill"
+            }
+          },
+          "SkillExperience": {
+            "fields": {
+              "content": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "jobId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "skillId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "job": {
+                "cardinality": "N:1",
+                "on": {
+                  "localFields": [
+                    "jobId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Job",
+                  "namespace": "public"
+                }
+              },
+              "skill": {
+                "cardinality": "N:1",
+                "on": {
+                  "localFields": [
+                    "skillId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Skill",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "content": {
+                  "column": "content"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "jobId": {
+                  "column": "job_id"
+                },
+                "skillId": {
+                  "column": "skill_id"
+                },
+                "updatedAt": {
+                  "column": "updated_at"
+                }
+              },
+              "namespaceId": "public",
+              "table": "skill_experience"
             }
           }
         }
@@ -245,12 +274,12 @@
       "public": {
         "entries": {
           "table": {
-            "note": {
+            "job": {
               "columns": {
                 "content": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
-                  "nullable": true
+                  "nullable": false
                 },
                 "created_at": {
                   "codecId": "pg/timestamptz-string@1",
@@ -258,6 +287,11 @@
                     "expression": "now()",
                     "kind": "function"
                   },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "ended_at": {
+                  "codecId": "pg/timestamptz-string@1",
                   "nativeType": "timestamptz",
                   "nullable": false
                 },
@@ -270,9 +304,9 @@
                   "nativeType": "int4",
                   "nullable": false
                 },
-                "skillId": {
-                  "codecId": "pg/int4@1",
-                  "nativeType": "int4",
+                "started_at": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "nativeType": "timestamptz",
                   "nullable": false
                 },
                 "title": {
@@ -286,34 +320,8 @@
                   "nullable": false
                 }
               },
-              "foreignKeys": [
-                {
-                  "source": {
-                    "columns": [
-                      "skillId"
-                    ],
-                    "namespaceId": "public",
-                    "tableName": "note"
-                  },
-                  "target": {
-                    "columns": [
-                      "id"
-                    ],
-                    "namespaceId": "public",
-                    "tableName": "skill"
-                  }
-                }
-              ],
-              "indexes": [
-                {
-                  "columns": [
-                    "skillId"
-                  ],
-                  "name": "note_skillId_idx_6e19993d",
-                  "prefix": "note_skillId_idx",
-                  "unique": false
-                }
-              ],
+              "foreignKeys": [],
+              "indexes": [],
               "primaryKey": {
                 "columns": [
                   "id"
@@ -337,6 +345,15 @@
                   "default": {
                     "expression": "autoincrement()",
                     "kind": "function"
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "level": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": 0
                   },
                   "nativeType": "int4",
                   "nullable": false
@@ -367,12 +384,12 @@
                 }
               ]
             },
-            "work_experience": {
+            "skill_experience": {
               "columns": {
                 "content": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
-                  "nullable": true
+                  "nullable": false
                 },
                 "created_at": {
                   "codecId": "pg/timestamptz-string@1",
@@ -392,9 +409,14 @@
                   "nativeType": "int4",
                   "nullable": false
                 },
-                "title": {
-                  "codecId": "pg/text@1",
-                  "nativeType": "text",
+                "job_id": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "skill_id": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
                   "nullable": false
                 },
                 "updated_at": {
@@ -403,8 +425,58 @@
                   "nullable": false
                 }
               },
-              "foreignKeys": [],
-              "indexes": [],
+              "foreignKeys": [
+                {
+                  "source": {
+                    "columns": [
+                      "skill_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "skill_experience"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "skill"
+                  }
+                },
+                {
+                  "source": {
+                    "columns": [
+                      "job_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "skill_experience"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "job"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "job_id"
+                  ],
+                  "name": "skill_experience_job_id_idx_58a5bbdd",
+                  "prefix": "skill_experience_job_id_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "skill_id"
+                  ],
+                  "name": "skill_experience_skill_id_idx_676c8389",
+                  "prefix": "skill_experience_skill_id_idx",
+                  "unique": false
+                }
+              ],
               "primaryKey": {
                 "columns": [
                   "id"
@@ -418,10 +490,10 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "6d52b54af719cd6ecb2148a8b4d0ae020d327855a39bcf6adbc14a8ad8e9c993"
+    "storageHash": "74f17ae5699a4d2d6cfe865312fd18a507e4ecc5e31eadbfc4b1da16d4cc32f5"
   },
   "execution": {
-    "executionHash": "0dfadacbf9e0153f57fafc2204fb73944f55aeeffbc666b857a65cf8cc1a388d",
+    "executionHash": "2dd5ea6dd16468a9a3598b2cc9f2aa643959329e5d1e2fa173319d9b1070cfb1",
     "mutations": {
       "defaults": [
         {
@@ -436,7 +508,7 @@
           "ref": {
             "column": "updated_at",
             "namespace": "public",
-            "table": "note"
+            "table": "job"
           }
         },
         {
@@ -466,7 +538,7 @@
           "ref": {
             "column": "updated_at",
             "namespace": "public",
-            "table": "work_experience"
+            "table": "skill_experience"
           }
         }
       ]

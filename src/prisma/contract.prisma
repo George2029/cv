@@ -2,28 +2,40 @@
 
 model Skill {
   id        Int      @id @default(autoincrement())
+
   name      String   @unique
-  notes     Note[]
+  level     Int @default(0)
+
   createdAt TimestamptzString @default(now()) @map("created_at")
   updatedAt temporal.updatedAtString() @map("updated_at")
 }
 
-model Note {
+model Job {
+  id          Int      @id @default(autoincrement())
+
+  title       String
+  content     String
+  startedAt   TimestamptzString @map("started_at")
+  endedAt     TimestamptzString @map("ended_at")
+
+  createdAt   TimestamptzString @default(now()) @map("created_at")
+  updatedAt   temporal.updatedAtString() @map("updated_at")
+
+  @@map("job")
+}
+
+model SkillExperience {
   id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
+
   skill     Skill     @relation(fields: [skillId], references: [id])
-  skillId   Int
+  skillId   Int       @map("skill_id")
+  job       Job       @relation(fields: [jobId], references: [id])
+  jobId     Int       @map("job_id")
+
+  content   String
+
   createdAt TimestamptzString @default(now()) @map("created_at")
   updatedAt temporal.updatedAtString() @map("updated_at")
+  @@map("skill_experience")
 }
 
-model WorkExperience {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
-  createdAt TimestamptzString @default(now()) @map("created_at")
-  updatedAt temporal.updatedAtString() @map("updated_at")
-
-  @@map("work_experience") 
-}

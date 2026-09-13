@@ -2,6 +2,7 @@ import type { FetchFunction } from "relay-runtime";
 import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
+import "./index.css";
 import { RelayEnvironmentProvider } from "react-relay";
 import { Environment, Network } from "relay-runtime";
 

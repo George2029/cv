@@ -1,0 +1,9 @@
+{
+  "from": "74f17ae5699a4d2d6cfe865312fd18a507e4ecc5e31eadbfc4b1da16d4cc32f5",
+  "to": "74f17ae5699a4d2d6cfe865312fd18a507e4ecc5e31eadbfc4b1da16d4cc32f5",
+  "providedInvariants": [
+    "reorder_tables_and_seed_skills"
+  ],
+  "createdAt": "2026-09-10T07:44:53.465Z",
+  "migrationHash": "c1a3090b356cbc54ac998724534957d49f5a7857ea210451c7722714e2c14f86"
+}

@@ -1,0 +1,13 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: database-only
+    env_file:
+      - ./.env
+    ports:
+      - 4444:5432
+    volumes:
+      - db-volume:/var/lib/postgresql/data
+
+volumes:
+  db-volume:

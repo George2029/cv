@@ -1,0 +1,358 @@
+[
+  {
+    "id": "dropTable.note",
+    "label": "Drop table \"note\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "note"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"note\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"note\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop table \"note\"",
+        "sql": "DROP TABLE \"public\".\"note\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"note\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"note\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dropTable.work_experience",
+    "label": "Drop table \"work_experience\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "work_experience"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"work_experience\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"work_experience\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop table \"work_experience\"",
+        "sql": "DROP TABLE \"public\".\"work_experience\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"work_experience\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"work_experience\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.job",
+    "label": "Create table \"job\"",
+    "summary": "Creates table \"job\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "job"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"job\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"job\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"job\"",
+        "sql": "CREATE TABLE \"public\".\"job\" (\n  \"content\" text NOT NULL,\n  \"created_at\" timestamptz DEFAULT (now()) NOT NULL,\n  \"ended_at\" timestamptz NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"started_at\" timestamptz NOT NULL,\n  \"title\" text NOT NULL,\n  \"updated_at\" timestamptz NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"job\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"job\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.skill_experience",
+    "label": "Create table \"skill_experience\"",
+    "summary": "Creates table \"skill_experience\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "skill_experience"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"skill_experience\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"skill_experience\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"skill_experience\"",
+        "sql": "CREATE TABLE \"public\".\"skill_experience\" (\n  \"content\" text NOT NULL,\n  \"created_at\" timestamptz DEFAULT (now()) NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"job_id\" int4 NOT NULL,\n  \"skill_id\" int4 NOT NULL,\n  \"updated_at\" timestamptz NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"skill_experience\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"skill_experience\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.skill.level",
+    "label": "Add column \"level\" to \"skill\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "level",
+        "table": "skill"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"level\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "skill",
+          "level"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"level\"",
+        "sql": "ALTER TABLE \"public\".\"skill\" ADD COLUMN \"level\" int4 DEFAULT 0 NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"level\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "skill",
+          "level"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.skill_experience.skill_experience_job_id_idx_58a5bbdd",
+    "label": "Create index \"skill_experience_job_id_idx_58a5bbdd\" on \"skill_experience\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "skill_experience_job_id_idx_58a5bbdd",
+        "table": "skill_experience"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"skill_experience_job_id_idx_58a5bbdd\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"skill_experience_job_id_idx_58a5bbdd\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"skill_experience_job_id_idx_58a5bbdd\"",
+        "sql": "CREATE INDEX \"skill_experience_job_id_idx_58a5bbdd\" ON \"public\".\"skill_experience\" (\"job_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"skill_experience_job_id_idx_58a5bbdd\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"skill_experience_job_id_idx_58a5bbdd\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.skill_experience.skill_experience_skill_id_idx_676c8389",
+    "label": "Create index \"skill_experience_skill_id_idx_676c8389\" on \"skill_experience\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "skill_experience_skill_id_idx_676c8389",
+        "table": "skill_experience"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"skill_experience_skill_id_idx_676c8389\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"skill_experience_skill_id_idx_676c8389\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"skill_experience_skill_id_idx_676c8389\"",
+        "sql": "CREATE INDEX \"skill_experience_skill_id_idx_676c8389\" ON \"public\".\"skill_experience\" (\"skill_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"skill_experience_skill_id_idx_676c8389\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"skill_experience_skill_id_idx_676c8389\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.skill_experience.skill_experience_skill_id_fkey",
+    "label": "Add foreign key \"skill_experience_skill_id_fkey\" on \"skill_experience\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "skill_experience_skill_id_fkey",
+        "table": "skill_experience"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"skill_experience_skill_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "skill_experience_skill_id_fkey",
+          "public",
+          "\"public\".\"skill_experience\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"skill_experience_skill_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"skill_experience\"\nADD CONSTRAINT \"skill_experience_skill_id_fkey\"\nFOREIGN KEY (\"skill_id\")\nREFERENCES \"public\".\"skill\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"skill_experience_skill_id_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "skill_experience_skill_id_fkey",
+          "public",
+          "\"public\".\"skill_experience\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.skill_experience.skill_experience_job_id_fkey",
+    "label": "Add foreign key \"skill_experience_job_id_fkey\" on \"skill_experience\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "skill_experience_job_id_fkey",
+        "table": "skill_experience"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"skill_experience_job_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "skill_experience_job_id_fkey",
+          "public",
+          "\"public\".\"skill_experience\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"skill_experience_job_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"skill_experience\"\nADD CONSTRAINT \"skill_experience_job_id_fkey\"\nFOREIGN KEY (\"job_id\")\nREFERENCES \"public\".\"job\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"skill_experience_job_id_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "skill_experience_job_id_fkey",
+          "public",
+          "\"public\".\"skill_experience\""
+        ]
+      }
+    ]
+  }
+]

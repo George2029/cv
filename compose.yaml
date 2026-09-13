@@ -3,7 +3,7 @@ services:
     image: postgres:17-alpine
     container_name: my-database
     env_file:
-      - ./.prod.env
+      - ./.env
     volumes:
       - db-volume:/var/lib/postgresql/data
     networks:
@@ -14,7 +14,7 @@ services:
     build:
       context: .
     env_file:
-      - ./.prod.env
+      - ./.env
     networks:
       - my-network
     depends_on:

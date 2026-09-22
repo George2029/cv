@@ -72,14 +72,6 @@ export default class M extends Migration<Start, End> {
               INSERT INTO skill_new (id, name, level, created_at, updated_at)
                 SELECT id, name, level, created_at, updated_at FROM skill;
 
-              -- 2b. Seed initial skills
-              INSERT INTO skill_new (name, level, created_at, updated_at)
-                VALUES 
-                  ('GraphQL', 0, now(), now()),
-                  ('JavaScript', 0, now(), now()),
-                  ('SQL', 0, now(), now())
-                ON CONFLICT (name) DO NOTHING;
-
               SELECT setval(pg_get_serial_sequence('skill_new', 'id'), COALESCE((SELECT MAX(id) FROM skill_new), 1), (SELECT MAX(id) FROM skill_new) IS NOT NULL);
 
               INSERT INTO skill_experience_new (id, skill_id, job_id, content, created_at, updated_at)

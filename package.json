@@ -6,18 +6,21 @@
     "build": "nest build",
     "start": "node dist/server.mjs",
 
-    "seed-default": "export $(cat .local.env) && tsx src/seeds/seedAll.ts",
+    "seed-init": "export $(cat .local.env) && tsx src/seeds/init.ts",
 
     "contract:emit": "export $(cat .local.env) && prisma contract emit",
     "db:init": "export $(cat .local.env)  && prisma db init",
+    "db:reset": "export $(cat .local.env) && psql $DATABASE_URL -c 'DROP SCHEMA public CASCADE; CREATE SCHEMA public; DROP SCHEMA prisma_contract CASCADE;' && npm run migrate && npm run seed-init",
     "db:update": "export $(cat .local.env) && prisma db update",
     "db:verify": "export $(cat .local.env) && prisma db verify",
-    "migrate": "export $(cat .local.env) && prisma db migrate",
+    "migrate": "export $(cat .local.env) && prisma db migrate --to=db",
     "migration:plan": "export $(cat .local.env) && prisma migration plan",
     "migration:status": "export $(cat .local.env) && prisma migration status",
 
     "skills:sync": "export $(cat .local.env) && prisma skills sync || exit 0",
-    "postinstall": "export $(cat .local.env) && prisma skills sync || exit 0"
+    "postinstall": "export $(cat .local.env) && prisma skills sync || exit 0",
+    "relay": "cp src/schema.gql front/schema.gql && npm --prefix front run relay",
+    "relay:watch": "npm --prefix front run relay:watch"
   },
   "dependencies": {
     "@apollo/server": "^5.5.1",

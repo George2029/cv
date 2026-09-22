@@ -1,0 +1,44 @@
+[
+  {
+    "id": "unique.skill_experience_translation.skill_experience_translation_skill_experience_id_is_lang_ru_key",
+    "label": "Add unique constraint on \"skill_experience_translation\" (skill_experience_id, is_lang_ru)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "skill_experience_translation_skill_experience_id_is_lang_ru_key",
+        "table": "skill_experience_translation"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"skill_experience_translation_skill_experience_id_is_lang_ru_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "skill_experience_translation_skill_experience_id_is_lang_ru_key",
+          "public",
+          "\"public\".\"skill_experience_translation\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"skill_experience_translation_skill_experience_id_is_lang_ru_key\"",
+        "sql": "ALTER TABLE \"public\".\"skill_experience_translation\" ADD CONSTRAINT \"skill_experience_translation_skill_experience_id_is_lang_ru_key\" UNIQUE (\"skill_experience_id\", \"is_lang_ru\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"skill_experience_translation_skill_experience_id_is_lang_ru_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "skill_experience_translation_skill_experience_id_is_lang_ru_key",
+          "public",
+          "\"public\".\"skill_experience_translation\""
+        ]
+      }
+    ]
+  }
+]

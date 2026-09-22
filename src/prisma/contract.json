@@ -15,6 +15,10 @@
     "skill_experience": {
       "model": "SkillExperience",
       "namespace": "public"
+    },
+    "skill_experience_translation": {
+      "model": "SkillExperienceTranslation",
+      "namespace": "public"
     }
   },
   "domain": {
@@ -165,13 +169,6 @@
           },
           "SkillExperience": {
             "fields": {
-              "content": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/text@1",
-                  "kind": "scalar"
-                }
-              },
               "createdAt": {
                 "nullable": false,
                 "type": {
@@ -187,6 +184,13 @@
                 }
               },
               "jobId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "shareOfJob": {
                 "nullable": false,
                 "type": {
                   "codecId": "pg/int4@1",
@@ -242,9 +246,6 @@
             },
             "storage": {
               "fields": {
-                "content": {
-                  "column": "content"
-                },
                 "createdAt": {
                   "column": "created_at"
                 },
@@ -253,6 +254,9 @@
                 },
                 "jobId": {
                   "column": "job_id"
+                },
+                "shareOfJob": {
+                  "column": "share_of_job"
                 },
                 "skillId": {
                   "column": "skill_id"
@@ -263,6 +267,83 @@
               },
               "namespaceId": "public",
               "table": "skill_experience"
+            }
+          },
+          "SkillExperienceTranslation": {
+            "fields": {
+              "content": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "isLangRu": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "skillExperienceId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "skillExperience": {
+                "cardinality": "N:1",
+                "on": {
+                  "localFields": [
+                    "skillExperienceId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "SkillExperience",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "content": {
+                  "column": "content"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "isLangRu": {
+                  "column": "is_lang_ru"
+                },
+                "skillExperienceId": {
+                  "column": "skill_experience_id"
+                },
+                "updatedAt": {
+                  "column": "updated_at"
+                }
+              },
+              "namespaceId": "public",
+              "table": "skill_experience_translation"
             }
           }
         }
@@ -386,11 +467,6 @@
             },
             "skill_experience": {
               "columns": {
-                "content": {
-                  "codecId": "pg/text@1",
-                  "nativeType": "text",
-                  "nullable": false
-                },
                 "created_at": {
                   "codecId": "pg/timestamptz-string@1",
                   "default": {
@@ -410,6 +486,11 @@
                   "nullable": false
                 },
                 "job_id": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "share_of_job": {
                   "codecId": "pg/int4@1",
                   "nativeType": "int4",
                   "nullable": false
@@ -483,6 +564,75 @@
                 ]
               },
               "uniques": []
+            },
+            "skill_experience_translation": {
+              "columns": {
+                "content": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "created_at": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "is_lang_ru": {
+                  "codecId": "pg/bool@1",
+                  "nativeType": "bool",
+                  "nullable": false
+                },
+                "skill_experience_id": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "updated_at": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "source": {
+                    "columns": [
+                      "skill_experience_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "skill_experience_translation"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "skill_experience"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "skill_experience_id"
+                  ],
+                  "name": "skill_experience_translation_skill_experience_id_idx_54e98d3d",
+                  "prefix": "skill_experience_translation_skill_experience_id_idx",
+                  "unique": false
+                }
+              ],
+              "uniques": [
+                {
+                  "columns": [
+                    "skill_experience_id",
+                    "is_lang_ru"
+                  ]
+                }
+              ]
             }
           }
         },
@@ -490,10 +640,10 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "74f17ae5699a4d2d6cfe865312fd18a507e4ecc5e31eadbfc4b1da16d4cc32f5"
+    "storageHash": "2e0deb07d381b67f715568d25c1caf714885e3c2060176197712e908b3324cc7"
   },
   "execution": {
-    "executionHash": "2dd5ea6dd16468a9a3598b2cc9f2aa643959329e5d1e2fa173319d9b1070cfb1",
+    "executionHash": "c5aa8f856cdecf2d9812856af097fbdf877658e6083d49971e229b971a1a4bcf",
     "mutations": {
       "defaults": [
         {
@@ -539,6 +689,21 @@
             "column": "updated_at",
             "namespace": "public",
             "table": "skill_experience"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "timestampNow",
+            "kind": "generator"
+          },
+          "onUpdate": {
+            "id": "timestampNow",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "updated_at",
+            "namespace": "public",
+            "table": "skill_experience_translation"
           }
         }
       ]

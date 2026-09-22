@@ -25,17 +25,31 @@ model Job {
 }
 
 model SkillExperience {
-  id        Int      @id @default(autoincrement())
+  id             Int       @id @default(autoincrement())
 
-  skill     Skill     @relation(fields: [skillId], references: [id])
-  skillId   Int       @map("skill_id")
-  job       Job       @relation(fields: [jobId], references: [id])
-  jobId     Int       @map("job_id")
+  skill          Skill     @relation(fields: [skillId], references: [id])
+  skillId        Int       @map("skill_id")
+  job            Job       @relation(fields: [jobId], references: [id])
+  jobId          Int       @map("job_id")
 
-  content   String
+  shareOfJob     Int @map("share_of_job")
 
-  createdAt TimestamptzString @default(now()) @map("created_at")
-  updatedAt temporal.updatedAtString() @map("updated_at")
+  createdAt      TimestamptzString @default(now()) @map("created_at")
+  updatedAt      temporal.updatedAtString() @map("updated_at")
   @@map("skill_experience")
 }
 
+
+model SkillExperienceTranslation {
+  skillExperience         SkillExperience       @relation(fields: [skillExperienceId], references: [id])
+  skillExperienceId     Int       @map("skill_experience_id")
+
+  content   String
+  isLangRu  Boolean @map("is_lang_ru")
+
+  createdAt TimestamptzString @default(now()) @map("created_at")
+  updatedAt temporal.updatedAtString() @map("updated_at")
+
+  @@unique([skillExperienceId, isLangRu])
+  @@map("skill_experience_translation")
+}

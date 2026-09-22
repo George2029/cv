@@ -1,0 +1,286 @@
+[
+  {
+    "id": "dropColumn.skill_experience.content",
+    "label": "Drop column \"content\" from \"skill_experience\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "content",
+        "table": "skill_experience"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"content\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "skill_experience",
+          "content"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop column \"content\"",
+        "sql": "ALTER TABLE \"public\".\"skill_experience\" DROP COLUMN \"content\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"content\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "skill_experience",
+          "content"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.skill_experience_translation",
+    "label": "Create table \"skill_experience_translation\"",
+    "summary": "Creates table \"skill_experience_translation\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "skill_experience_translation"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"skill_experience_translation\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"skill_experience_translation\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"skill_experience_translation\"",
+        "sql": "CREATE TABLE \"public\".\"skill_experience_translation\" (\n  \"skill_experience_id\" int4 NOT NULL,\n  \"content\" text NOT NULL,\n  \"is_lang_ru\" bool NOT NULL,\n  \"created_at\" timestamptz DEFAULT (now()) NOT NULL,\n  \"updated_at\" timestamptz NOT NULL\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"skill_experience_translation\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"skill_experience_translation\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.skill_experience.share_of_job",
+    "label": "Add column \"share_of_job\" to \"skill_experience\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "share_of_job",
+        "table": "skill_experience"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"share_of_job\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "skill_experience",
+          "share_of_job"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"share_of_job\"",
+        "sql": "ALTER TABLE \"public\".\"skill_experience\" ADD COLUMN \"share_of_job\" int4"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"share_of_job\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "skill_experience",
+          "share_of_job"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "data_migration.backfill-skill_experience-share_of_job",
+    "label": "Data transform: backfill-skill_experience-share_of_job",
+    "operationClass": "data",
+    "target": {
+      "id": "postgres"
+    },
+    "precheck": [
+      {
+        "description": "Check backfill-skill_experience-share_of_job has work to do",
+        "sql": "SELECT EXISTS (SELECT \"id\" AS \"id\" FROM \"public\".\"skill_experience\" WHERE \"share_of_job\" IS NULL LIMIT 1) AS ok",
+        "params": []
+      }
+    ],
+    "execute": [
+      {
+        "description": "Run backfill-skill_experience-share_of_job",
+        "sql": "UPDATE \"public\".\"skill_experience\" SET \"share_of_job\" = $1, \"updated_at\" = $2 WHERE \"share_of_job\" IS NULL",
+        "params": [
+          0,
+          "2026-09-20T00:00:00.000Z"
+        ]
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "Verify backfill-skill_experience-share_of_job resolved all violations",
+        "sql": "SELECT NOT EXISTS (SELECT \"id\" AS \"id\" FROM \"public\".\"skill_experience\" WHERE \"share_of_job\" IS NULL LIMIT 1) AS ok",
+        "params": []
+      }
+    ]
+  },
+  {
+    "id": "alterNullability.setNotNull.skill_experience.share_of_job",
+    "label": "Set NOT NULL on \"skill_experience\".\"share_of_job\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "share_of_job",
+        "table": "skill_experience"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"share_of_job\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "skill_experience",
+          "share_of_job"
+        ]
+      },
+      {
+        "description": "ensure no NULL values in \"share_of_job\"",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"public\".\"skill_experience\" WHERE \"share_of_job\" IS NULL) AS \"result\"",
+        "params": []
+      }
+    ],
+    "execute": [
+      {
+        "description": "set NOT NULL on \"share_of_job\"",
+        "sql": "ALTER TABLE \"public\".\"skill_experience\" ALTER COLUMN \"share_of_job\" SET NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"share_of_job\" is NOT NULL",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"is_nullable\" = $4)) AS \"result\"",
+        "params": [
+          "public",
+          "skill_experience",
+          "share_of_job",
+          "NO"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.skill_experience_translation.skill_experience_translation_skill_experience_id_idx_54e98d3d",
+    "label": "Create index \"skill_experience_translation_skill_experience_id_idx_54e98d3d\" on \"skill_experience_translation\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "skill_experience_translation_skill_experience_id_idx_54e98d3d",
+        "table": "skill_experience_translation"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"skill_experience_translation_skill_experience_id_idx_54e98d3d\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"skill_experience_translation_skill_experience_id_idx_54e98d3d\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"skill_experience_translation_skill_experience_id_idx_54e98d3d\"",
+        "sql": "CREATE INDEX \"skill_experience_translation_skill_experience_id_idx_54e98d3d\" ON \"public\".\"skill_experience_translation\" (\"skill_experience_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"skill_experience_translation_skill_experience_id_idx_54e98d3d\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"skill_experience_translation_skill_experience_id_idx_54e98d3d\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.skill_experience_translation.skill_experience_translation_skill_experience_id_fkey",
+    "label": "Add foreign key \"skill_experience_translation_skill_experience_id_fkey\" on \"skill_experience_translation\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "skill_experience_translation_skill_experience_id_fkey",
+        "table": "skill_experience_translation"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"skill_experience_translation_skill_experience_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "skill_experience_translation_skill_experience_id_fkey",
+          "public",
+          "\"public\".\"skill_experience_translation\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"skill_experience_translation_skill_experience_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"skill_experience_translation\"\nADD CONSTRAINT \"skill_experience_translation_skill_experience_id_fkey\"\nFOREIGN KEY (\"skill_experience_id\")\nREFERENCES \"public\".\"skill_experience\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"skill_experience_translation_skill_experience_id_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "skill_experience_translation_skill_experience_id_fkey",
+          "public",
+          "\"public\".\"skill_experience_translation\""
+        ]
+      }
+    ]
+  }
+]

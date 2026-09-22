@@ -6,10 +6,45 @@
 type Skill {
   id: ID!
   name: String!
+  level: Int!
   createdAt: String!
   updatedAt: String!
 }
 
+"""job"""
+type Job {
+  id: ID!
+  title: String!
+  content: String!
+  startedAt: String!
+  endedAt: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+"""skill_experience"""
+type SkillExperience {
+  id: ID!
+  skillId: Int!
+  jobId: Int!
+  shareOfJob: Int!
+  createdAt: String!
+  updatedAt: String!
+  skill: Skill!
+  job: Job!
+}
+
+"""skill_experience_translation"""
+type SkillExperienceTranslation {
+  skillExperienceId: Int!
+  content: String!
+  isLangRu: Boolean!
+  createdAt: String!
+  updatedAt: String!
+  skillExperience: SkillExperience!
+}
+
 type Query {
-  skills(ids: [Int!]): [Skill!]!
+  """Fetches all skill experience translations with chained relations"""
+  skillExperienceTranslations: [SkillExperienceTranslation!]!
 }

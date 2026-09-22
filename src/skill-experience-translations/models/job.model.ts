@@ -1,12 +1,21 @@
 import { Field, ID, ObjectType } from "@nestjs/graphql";
 
-@ObjectType({ description: "skill" })
-export class Skill {
+@ObjectType({ description: "job" })
+export class Job {
   @Field(() => ID)
   id!: number;
 
   @Field(() => String)
-  name!: string;
+  title!: string;
+
+  @Field(() => String)
+  content!: string;
+
+  @Field(() => String)
+  startedAt!: string;
+
+  @Field(() => String)
+  endedAt!: string;
 
   @Field(() => String)
   createdAt!: string;
@@ -14,3 +23,4 @@ export class Skill {
   @Field(() => String)
   updatedAt!: string;
 }
+

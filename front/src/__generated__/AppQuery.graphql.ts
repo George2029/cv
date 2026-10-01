@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<eeefac9abee59b96c6370c1e90098354>>
+ * @generated SignedSource<<539d9ccd31ad87011f90ffd07c24e269>>
  * @lightSyntaxTransform
  */
 
@@ -15,7 +15,17 @@ export type AppQuery$data = {
     readonly isLangRu: boolean;
     readonly skillExperience: {
       readonly id: string;
+      readonly job: {
+        readonly content: string;
+        readonly endedAt: string;
+        readonly id: string;
+        readonly startedAt: string;
+        readonly title: string;
+      };
+      readonly shareOfJob: number;
       readonly skill: {
+        readonly id: string;
+        readonly level: number;
         readonly name: string;
       };
     };
@@ -32,74 +42,111 @@ var v0 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "skillExperienceId",
+  "name": "content",
   "storageKey": null
 },
 v1 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "isLangRu",
-  "storageKey": null
-},
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "content",
-  "storageKey": null
-},
-v3 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v4 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "name",
-  "storageKey": null
-};
-return {
-  "fragment": {
-    "argumentDefinitions": [],
-    "kind": "Fragment",
-    "metadata": null,
-    "name": "AppQuery",
+v2 = [
+  {
+    "alias": null,
+    "args": null,
+    "concreteType": "SkillExperienceTranslation",
+    "kind": "LinkedField",
+    "name": "skillExperienceTranslations",
+    "plural": true,
     "selections": [
       {
         "alias": null,
         "args": null,
-        "concreteType": "SkillExperienceTranslation",
+        "kind": "ScalarField",
+        "name": "skillExperienceId",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "isLangRu",
+        "storageKey": null
+      },
+      (v0/*:: as any*/),
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "SkillExperience",
         "kind": "LinkedField",
-        "name": "skillExperienceTranslations",
-        "plural": true,
+        "name": "skillExperience",
+        "plural": false,
         "selections": [
-          (v0/*:: as any*/),
           (v1/*:: as any*/),
-          (v2/*:: as any*/),
           {
             "alias": null,
             "args": null,
-            "concreteType": "SkillExperience",
+            "kind": "ScalarField",
+            "name": "shareOfJob",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Skill",
             "kind": "LinkedField",
-            "name": "skillExperience",
+            "name": "skill",
             "plural": false,
             "selections": [
-              (v3/*:: as any*/),
+              (v1/*:: as any*/),
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "Skill",
-                "kind": "LinkedField",
-                "name": "skill",
-                "plural": false,
-                "selections": [
-                  (v4/*:: as any*/)
-                ],
+                "kind": "ScalarField",
+                "name": "name",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "level",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Job",
+            "kind": "LinkedField",
+            "name": "job",
+            "plural": false,
+            "selections": [
+              (v1/*:: as any*/),
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "title",
+                "storageKey": null
+              },
+              (v0/*:: as any*/),
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "startedAt",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "endedAt",
                 "storageKey": null
               }
             ],
@@ -109,6 +156,16 @@ return {
         "storageKey": null
       }
     ],
+    "storageKey": null
+  }
+];
+return {
+  "fragment": {
+    "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "AppQuery",
+    "selections": (v2/*:: as any*/),
     "type": "Query",
     "abstractKey": null
   },
@@ -117,59 +174,19 @@ return {
     "argumentDefinitions": [],
     "kind": "Operation",
     "name": "AppQuery",
-    "selections": [
-      {
-        "alias": null,
-        "args": null,
-        "concreteType": "SkillExperienceTranslation",
-        "kind": "LinkedField",
-        "name": "skillExperienceTranslations",
-        "plural": true,
-        "selections": [
-          (v0/*:: as any*/),
-          (v1/*:: as any*/),
-          (v2/*:: as any*/),
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "SkillExperience",
-            "kind": "LinkedField",
-            "name": "skillExperience",
-            "plural": false,
-            "selections": [
-              (v3/*:: as any*/),
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "Skill",
-                "kind": "LinkedField",
-                "name": "skill",
-                "plural": false,
-                "selections": [
-                  (v4/*:: as any*/),
-                  (v3/*:: as any*/)
-                ],
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
-      }
-    ]
+    "selections": (v2/*:: as any*/)
   },
   "params": {
-    "cacheID": "2ae6c4ef8b788aebf8e4f4fc3e813065",
+    "cacheID": "bfb115c509de4d28c01a66c53bef58f1",
     "id": null,
     "metadata": {},
     "name": "AppQuery",
     "operationKind": "query",
-    "text": "query AppQuery {\n  skillExperienceTranslations {\n    skillExperienceId\n    isLangRu\n    content\n    skillExperience {\n      id\n      skill {\n        name\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query AppQuery {\n  skillExperienceTranslations {\n    skillExperienceId\n    isLangRu\n    content\n    skillExperience {\n      id\n      shareOfJob\n      skill {\n        id\n        name\n        level\n      }\n      job {\n        id\n        title\n        content\n        startedAt\n        endedAt\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "dd74644501feff374bf38aacf9f87344";
+(node as any).hash = "b5850ae5efb6c77540ff9ee5bc4f30f8";
 
 export default node;

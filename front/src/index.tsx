@@ -3,6 +3,7 @@ import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
+import { FrontPage } from "./FrontPage";
 import { RelayEnvironmentProvider } from "react-relay";
 import { Environment, Network } from "relay-runtime";
 
@@ -27,7 +28,9 @@ const environment = new Environment({
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <RelayEnvironmentProvider environment={environment}>
-      <Suspense fallback="Loading...">
+      <Suspense
+        fallback={<FrontPage isLangRu={false} setIsLangRu={() => {}} />}
+      >
         <App />
       </Suspense>
     </RelayEnvironmentProvider>

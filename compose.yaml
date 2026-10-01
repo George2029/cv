@@ -1,6 +1,7 @@
 services:
   db:
     image: postgres:17-alpine
+    command: postgres -c log_min_duration_statement=0
     container_name: my-database
     env_file:
       - ./.env

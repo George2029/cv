@@ -1,5 +1,21 @@
 @import "tailwindcss";
 
+@theme {
+  --font-myfont: "myfont", sans-serif;
+}
+
 body {
   margin: 0;
+}
+
+@font-face {
+  font-family: "myfont";
+  src: url("./assets/Original_Surfer/OriginalSurfer-Regular.ttf") format("truetype");
+}
+
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
 }

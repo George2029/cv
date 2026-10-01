@@ -20,15 +20,15 @@ async function main() {
       title: "Telegram-based Web3 Gamification Platform",
       content:
         "Designed and optimized complex SQL queries. Built CI/CD pipelines. Resolved database deadlocks and concurrency issues",
-      startedAt: new Date().toISOString(),
-      endedAt: new Date().toISOString(),
+      startedAt: new Date("2024.06.20").toISOString(),
+      endedAt: new Date("2024.12.20").toISOString(),
     },
     {
       title: "Crypto Trading Platform ",
       content:
         "Designed backend architecture for integrations with multiple decentralized exchanges (DEXs). Developed a Solana on-chain program in Rust to automate trading strategies. Refactored and improved the React frontend to increase maintainability and performance. Containerized and deployed a multi-service application using Docker. Authored OpenAPI specifications for backend services and REST APIs. Produced UML diagrams to document system architecture and service interactions",
-      startedAt: new Date().toISOString(),
-      endedAt: new Date().toISOString(),
+      startedAt: new Date("2025.01.01").toISOString(),
+      endedAt: new Date("2026.07.23").toISOString(),
     },
   ]);
 

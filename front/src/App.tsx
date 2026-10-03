@@ -14,25 +14,24 @@ export default function App() {
   const data = useLazyLoadQuery<AppQuery>(
     graphql`
       query AppQuery {
-        skillExperienceTranslations {
-          skillExperienceId
-          isLangRu
+        skillExperiences {
+          id
+          shareOfJob
           content
-          skillExperience {
+          contentRu
+          skill {
             id
-            shareOfJob
-            skill {
-              id
-              name
-              level
-            }
-            job {
-              id
-              title
-              content
-              startedAt
-              endedAt
-            }
+            name
+            level
+          }
+          job {
+            id
+            title
+            titleRu
+            content
+            contentRu
+            startedAt
+            endedAt
           }
         }
       }
@@ -40,58 +39,64 @@ export default function App() {
     {},
   );
 
-  const accumulated: Record<string, JobData> =
-    data.skillExperienceTranslations.reduce(
-      (pr, cv) => {
-        const { skillExperience, content } = cv;
-        if (cv.isLangRu !== isLangRu) return pr;
-        const {
-          job: { id: jobId, title, startedAt, endedAt, content: description },
-          skill: { name: skillName },
-          shareOfJob,
-        } = skillExperience;
-
-        const exp = { skillName, content, shareOfJob };
-
-        pr[jobId] ??= {
-          title,
-          experiences: [],
-          startedAt,
-          endedAt,
-          description,
-        };
-        pr[jobId].experiences.push(exp);
-
-        return pr;
-      },
-      {} as Record<string, JobData>,
-    );
-
-  const skills = data.skillExperienceTranslations.reduce(
+  const accumulated: Record<string, JobData> = data.skillExperiences.reduce(
     (pr, cv) => {
-      const skill = cv.skillExperience.skill;
+      const {
+        content,
+        contentRu,
+        job: { id: jobId, title, startedAt, endedAt, content: description },
+        skill: { name: skillName },
+        shareOfJob,
+      } = cv;
+
+      const exp = {
+        skillName,
+        content: isLangRu ? contentRu : content,
+        shareOfJob,
+      };
+
+      pr[jobId] ??= {
+        title,
+        experiences: [],
+        startedAt,
+        endedAt,
+        description,
+      };
+      pr[jobId].experiences.push(exp);
+
+      return pr;
+    },
+    {} as Record<string, JobData>,
+  );
+
+  const skills = data.skillExperiences.reduce(
+    (pr, cv) => {
+      const skill = cv.skill;
       pr[skill.name] = skill.level;
       return pr;
     },
     {} as Record<string, number>,
   );
 
-  const workExperiences = data.skillExperienceTranslations.reduce(
+  const workExperiences = data.skillExperiences.reduce(
     (pr, cv) => {
-      const skillExperience = cv.skillExperience;
-      pr[cv.skillExperience.id] = skillExperience;
+      pr[cv.id] = cv;
       return pr;
     },
     {} as Record<
       string,
       {
+        readonly content: string;
+        readonly contentRu: string;
         readonly id: string;
         readonly job: {
           readonly content: string;
+          readonly contentRu: string;
           readonly endedAt: string;
           readonly id: string;
           readonly startedAt: string;
           readonly title: string;
+          readonly titleRu: string;
         };
         readonly shareOfJob: number;
         readonly skill: {

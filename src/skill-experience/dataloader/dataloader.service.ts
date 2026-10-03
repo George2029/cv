@@ -2,10 +2,10 @@ import { Injectable, Inject } from "@nestjs/common";
 import DataLoader from "dataloader";
 import { SkillsService } from "../../skills/skills.service";
 import { JobsService } from "../../jobs/jobs.service";
-import { SkillExperiencesService } from "../../skill-experiences/skill.experiences.service";
-import type { Skill } from "../models/skill.model";
-import type { Job } from "../models/job.model";
-import type { SkillExperience } from "../models/skill.experience.model";
+import { SkillExperiencesService } from "../../skill-experience/skill.experience.service";
+import type { Skill } from "./../skill.model";
+import type { Job } from "../job.model";
+import type { SkillExperience } from "../skill.experience.model";
 
 export interface IDataloaders {
   skillExperienceLoader: DataLoader<number, SkillExperience | null>;
@@ -23,14 +23,15 @@ export class DataloaderService {
   ) {}
 
   createLoaders(): IDataloaders {
-    const skillExperienceLoader = new DataLoader<number, SkillExperience | null>(
-      async (ids: readonly number[]) => {
-        if (ids.length === 0) return [];
-        const records = await this.skillExperiencesService.findByIds([...ids]);
-        const map = new Map(records.map((r) => [r.id, r]));
-        return ids.map((id) => map.get(id) ?? null);
-      },
-    );
+    const skillExperienceLoader = new DataLoader<
+      number,
+      SkillExperience | null
+    >(async (ids: readonly number[]) => {
+      if (ids.length === 0) return [];
+      const records = await this.skillExperiencesService.findByIds([...ids]);
+      const map = new Map(records.map((r) => [r.id, r]));
+      return ids.map((id) => map.get(id) ?? null);
+    });
 
     const skillLoader = new DataLoader<number, Skill | null>(
       async (ids: readonly number[]) => {
@@ -57,4 +58,3 @@ export class DataloaderService {
     };
   }
 }
-

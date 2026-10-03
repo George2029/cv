@@ -17,6 +17,12 @@ export class SkillExperience {
   shareOfJob!: number;
 
   @Field(() => String)
+  content!: string;
+
+  @Field(() => String)
+  contentRu!: string;
+
+  @Field(() => String)
   createdAt!: string;
 
   @Field(() => String)

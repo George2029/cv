@@ -9,7 +9,13 @@ export class Job {
   title!: string;
 
   @Field(() => String)
+  titleRu!: string;
+
+  @Field(() => String)
   content!: string;
+
+  @Field(() => String)
+  contentRu!: string;
 
   @Field(() => String)
   startedAt!: string;

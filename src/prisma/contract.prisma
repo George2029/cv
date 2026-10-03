@@ -14,7 +14,11 @@ model Job {
   id          Int      @id @default(autoincrement())
 
   title       String
+  titleRu      String @default("") @map("title_ru")
+
   content     String
+  contentRu      String @default("") @map("content_ru")
+
   startedAt   TimestamptzString @map("started_at")
   endedAt     TimestamptzString @map("ended_at")
 
@@ -34,22 +38,12 @@ model SkillExperience {
 
   shareOfJob     Int @map("share_of_job")
 
+  content        String @default("")
+  contentRu      String @default("") @map("content_ru")
+
   createdAt      TimestamptzString @default(now()) @map("created_at")
   updatedAt      temporal.updatedAtString() @map("updated_at")
   @@map("skill_experience")
 }
 
 
-model SkillExperienceTranslation {
-  skillExperience         SkillExperience       @relation(fields: [skillExperienceId], references: [id])
-  skillExperienceId     Int       @map("skill_experience_id")
-
-  content   String
-  isLangRu  Boolean @map("is_lang_ru")
-
-  createdAt TimestamptzString @default(now()) @map("created_at")
-  updatedAt temporal.updatedAtString() @map("updated_at")
-
-  @@unique([skillExperienceId, isLangRu])
-  @@map("skill_experience_translation")
-}

@@ -33,9 +33,9 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'2e0deb07d381b67f715568d25c1caf714885e3c2060176197712e908b3324cc7'>;
+  StorageHashBase<'11435ab39bcf998a35bf74c216bdda0baec3cb030c66b08170ad4dec81e1be3a'>;
 export type ExecutionHash =
-  ExecutionHashBase<'c5aa8f856cdecf2d9812856af097fbdf877658e6083d49971e229b971a1a4bcf'>;
+  ExecutionHashBase<'2dd5ea6dd16468a9a3598b2cc9f2aa643959329e5d1e2fa173319d9b1070cfb1'>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
 
@@ -244,7 +244,9 @@ export type FieldOutputTypes = {
     readonly Job: {
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly title: CodecTypes['pg/text@1']['output'];
+      readonly titleRu: CodecTypes['pg/text@1']['output'];
       readonly content: CodecTypes['pg/text@1']['output'];
+      readonly contentRu: CodecTypes['pg/text@1']['output'];
       readonly startedAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly endedAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
@@ -262,13 +264,8 @@ export type FieldOutputTypes = {
       readonly skillId: CodecTypes['pg/int4@1']['output'];
       readonly jobId: CodecTypes['pg/int4@1']['output'];
       readonly shareOfJob: CodecTypes['pg/int4@1']['output'];
-      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
-    };
-    readonly SkillExperienceTranslation: {
-      readonly skillExperienceId: CodecTypes['pg/int4@1']['output'];
       readonly content: CodecTypes['pg/text@1']['output'];
-      readonly isLangRu: CodecTypes['pg/bool@1']['output'];
+      readonly contentRu: CodecTypes['pg/text@1']['output'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
     };
@@ -279,7 +276,9 @@ export type FieldInputTypes = {
     readonly Job: {
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly title: CodecTypes['pg/text@1']['input'];
+      readonly titleRu: CodecTypes['pg/text@1']['input'];
       readonly content: CodecTypes['pg/text@1']['input'];
+      readonly contentRu: CodecTypes['pg/text@1']['input'];
       readonly startedAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly endedAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
@@ -297,13 +296,8 @@ export type FieldInputTypes = {
       readonly skillId: CodecTypes['pg/int4@1']['input'];
       readonly jobId: CodecTypes['pg/int4@1']['input'];
       readonly shareOfJob: CodecTypes['pg/int4@1']['input'];
-      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
-    };
-    readonly SkillExperienceTranslation: {
-      readonly skillExperienceId: CodecTypes['pg/int4@1']['input'];
       readonly content: CodecTypes['pg/text@1']['input'];
-      readonly isLangRu: CodecTypes['pg/bool@1']['input'];
+      readonly contentRu: CodecTypes['pg/text@1']['input'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
     };
@@ -313,11 +307,13 @@ export type StorageColumnTypes = {
   readonly public: {
     readonly job: {
       readonly content: CodecTypes['pg/text@1']['output'];
+      readonly content_ru: CodecTypes['pg/text@1']['output'];
       readonly created_at: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly ended_at: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly started_at: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly title: CodecTypes['pg/text@1']['output'];
+      readonly title_ru: CodecTypes['pg/text@1']['output'];
       readonly updated_at: CodecTypes['pg/timestamptz-string@1']['output'];
     };
     readonly skill: {
@@ -328,18 +324,13 @@ export type StorageColumnTypes = {
       readonly updated_at: CodecTypes['pg/timestamptz-string@1']['output'];
     };
     readonly skill_experience: {
+      readonly content: CodecTypes['pg/text@1']['output'];
+      readonly content_ru: CodecTypes['pg/text@1']['output'];
       readonly created_at: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly job_id: CodecTypes['pg/int4@1']['output'];
       readonly share_of_job: CodecTypes['pg/int4@1']['output'];
       readonly skill_id: CodecTypes['pg/int4@1']['output'];
-      readonly updated_at: CodecTypes['pg/timestamptz-string@1']['output'];
-    };
-    readonly skill_experience_translation: {
-      readonly content: CodecTypes['pg/text@1']['output'];
-      readonly created_at: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly is_lang_ru: CodecTypes['pg/bool@1']['output'];
-      readonly skill_experience_id: CodecTypes['pg/int4@1']['output'];
       readonly updated_at: CodecTypes['pg/timestamptz-string@1']['output'];
     };
   };
@@ -348,11 +339,13 @@ export type StorageColumnInputTypes = {
   readonly public: {
     readonly job: {
       readonly content: CodecTypes['pg/text@1']['input'];
+      readonly content_ru: CodecTypes['pg/text@1']['input'];
       readonly created_at: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly ended_at: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly started_at: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly title: CodecTypes['pg/text@1']['input'];
+      readonly title_ru: CodecTypes['pg/text@1']['input'];
       readonly updated_at: CodecTypes['pg/timestamptz-string@1']['input'];
     };
     readonly skill: {
@@ -363,18 +356,13 @@ export type StorageColumnInputTypes = {
       readonly updated_at: CodecTypes['pg/timestamptz-string@1']['input'];
     };
     readonly skill_experience: {
+      readonly content: CodecTypes['pg/text@1']['input'];
+      readonly content_ru: CodecTypes['pg/text@1']['input'];
       readonly created_at: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly job_id: CodecTypes['pg/int4@1']['input'];
       readonly share_of_job: CodecTypes['pg/int4@1']['input'];
       readonly skill_id: CodecTypes['pg/int4@1']['input'];
-      readonly updated_at: CodecTypes['pg/timestamptz-string@1']['input'];
-    };
-    readonly skill_experience_translation: {
-      readonly content: CodecTypes['pg/text@1']['input'];
-      readonly created_at: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly is_lang_ru: CodecTypes['pg/bool@1']['input'];
-      readonly skill_experience_id: CodecTypes['pg/int4@1']['input'];
       readonly updated_at: CodecTypes['pg/timestamptz-string@1']['input'];
     };
   };
@@ -413,10 +401,28 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
                 };
+                readonly title_ru: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', ''>;
+                  };
+                };
                 readonly content: {
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
+                };
+                readonly content_ru: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', ''>;
+                  };
                 };
                 readonly started_at: {
                   readonly nativeType: 'timestamptz';
@@ -513,6 +519,24 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/int4@1';
                   readonly nullable: false;
                 };
+                readonly content: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', ''>;
+                  };
+                };
+                readonly content_ru: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', ''>;
+                  };
+                };
                 readonly created_at: {
                   readonly nativeType: 'timestamptz';
                   readonly codecId: 'pg/timestamptz-string@1';
@@ -568,61 +592,6 @@ type ContractBase = Omit<
                 },
               ];
             };
-            readonly skill_experience_translation: {
-              columns: {
-                readonly skill_experience_id: {
-                  readonly nativeType: 'int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                };
-                readonly content: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                };
-                readonly is_lang_ru: {
-                  readonly nativeType: 'bool';
-                  readonly codecId: 'pg/bool@1';
-                  readonly nullable: false;
-                };
-                readonly created_at: {
-                  readonly nativeType: 'timestamptz';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                  readonly nullable: false;
-                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
-                };
-                readonly updated_at: {
-                  readonly nativeType: 'timestamptz';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                  readonly nullable: false;
-                };
-              };
-              uniques: readonly [
-                { readonly columns: readonly ['skill_experience_id', 'is_lang_ru'] },
-              ];
-              indexes: readonly [
-                {
-                  readonly name: 'skill_experience_translation_skill_experience_id_idx_54e98d3d';
-                  readonly prefix: 'skill_experience_translation_skill_experience_id_idx';
-                  readonly columns: readonly ['skill_experience_id'];
-                  readonly unique: false;
-                },
-              ];
-              foreignKeys: readonly [
-                {
-                  readonly source: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'skill_experience_translation';
-                    readonly columns: readonly ['skill_experience_id'];
-                  };
-                  readonly target: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'skill_experience';
-                    readonly columns: readonly ['id'];
-                  };
-                },
-              ];
-            };
           };
         };
       };
@@ -640,10 +609,6 @@ type ContractBase = Omit<
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'SkillExperience';
     };
-    readonly skill_experience_translation: {
-      readonly namespace: 'public' & NamespaceId;
-      readonly model: 'SkillExperienceTranslation';
-    };
   };
   readonly domain: {
     readonly namespaces: {
@@ -659,7 +624,15 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
+              readonly titleRu: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
               readonly content: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly contentRu: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
@@ -699,7 +672,9 @@ type ContractBase = Omit<
               readonly fields: {
                 readonly id: { readonly column: 'id' };
                 readonly title: { readonly column: 'title' };
+                readonly titleRu: { readonly column: 'title_ru' };
                 readonly content: { readonly column: 'content' };
+                readonly contentRu: { readonly column: 'content_ru' };
                 readonly startedAt: { readonly column: 'started_at' };
                 readonly endedAt: { readonly column: 'ended_at' };
                 readonly createdAt: { readonly column: 'created_at' };
@@ -767,6 +742,14 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
+              readonly content: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly contentRu: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
               readonly createdAt: {
                 readonly nullable: false;
                 readonly type: {
@@ -811,60 +794,8 @@ type ContractBase = Omit<
                 readonly skillId: { readonly column: 'skill_id' };
                 readonly jobId: { readonly column: 'job_id' };
                 readonly shareOfJob: { readonly column: 'share_of_job' };
-                readonly createdAt: { readonly column: 'created_at' };
-                readonly updatedAt: { readonly column: 'updated_at' };
-              };
-            };
-          };
-          readonly SkillExperienceTranslation: {
-            readonly fields: {
-              readonly skillExperienceId: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly content: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly isLangRu: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/bool@1' };
-              };
-              readonly createdAt: {
-                readonly nullable: false;
-                readonly type: {
-                  readonly kind: 'scalar';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                };
-              };
-              readonly updatedAt: {
-                readonly nullable: false;
-                readonly type: {
-                  readonly kind: 'scalar';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                };
-              };
-            };
-            readonly relations: {
-              readonly skillExperience: {
-                readonly to: {
-                  readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'SkillExperience';
-                };
-                readonly cardinality: 'N:1';
-                readonly on: {
-                  readonly localFields: readonly ['skillExperienceId'];
-                  readonly targetFields: readonly ['id'];
-                };
-              };
-            };
-            readonly storage: {
-              readonly table: 'skill_experience_translation';
-              readonly namespaceId: 'public';
-              readonly fields: {
-                readonly skillExperienceId: { readonly column: 'skill_experience_id' };
                 readonly content: { readonly column: 'content' };
-                readonly isLangRu: { readonly column: 'is_lang_ru' };
+                readonly contentRu: { readonly column: 'content_ru' };
                 readonly createdAt: { readonly column: 'created_at' };
                 readonly updatedAt: { readonly column: 'updated_at' };
               };
@@ -919,15 +850,6 @@ type ContractBase = Omit<
           readonly ref: {
             readonly namespace: 'public';
             readonly table: 'skill_experience';
-            readonly column: 'updated_at';
-          };
-          readonly onCreate: { readonly kind: 'generator'; readonly id: 'timestampNow' };
-          readonly onUpdate: { readonly kind: 'generator'; readonly id: 'timestampNow' };
-        },
-        {
-          readonly ref: {
-            readonly namespace: 'public';
-            readonly table: 'skill_experience_translation';
             readonly column: 'updated_at';
           };
           readonly onCreate: { readonly kind: 'generator'; readonly id: 'timestampNow' };

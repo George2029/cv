@@ -1,12 +1,10 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
-import type { SkillExperience } from "../skill-experience-translations/models/skill.experience.model";
+import type { SkillExperience } from "../skill-experience/skill.experience.model";
 
 @Injectable()
 export class SkillExperiencesService {
-  constructor(
-    @Inject(PrismaService) private readonly prisma: PrismaService,
-  ) {}
+  constructor(@Inject(PrismaService) private readonly prisma: PrismaService) {}
 
   async findByIds(ids: number[]): Promise<SkillExperience[]> {
     if (!ids || ids.length === 0) {
@@ -21,4 +19,3 @@ export class SkillExperiencesService {
     return this.prisma.db.orm.public.SkillExperience.all();
   }
 }
-

@@ -1,0 +1,207 @@
+[
+  {
+    "id": "dropTable.skill_experience_translation",
+    "label": "Drop table \"skill_experience_translation\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "skill_experience_translation"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"skill_experience_translation\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"skill_experience_translation\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop table \"skill_experience_translation\"",
+        "sql": "DROP TABLE \"public\".\"skill_experience_translation\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"skill_experience_translation\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"skill_experience_translation\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.job.content_ru",
+    "label": "Add column \"content_ru\" to \"job\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "content_ru",
+        "table": "job"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"content_ru\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "job",
+          "content_ru"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"content_ru\"",
+        "sql": "ALTER TABLE \"public\".\"job\" ADD COLUMN \"content_ru\" text DEFAULT '' NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"content_ru\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "job",
+          "content_ru"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.job.title_ru",
+    "label": "Add column \"title_ru\" to \"job\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "title_ru",
+        "table": "job"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"title_ru\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "job",
+          "title_ru"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"title_ru\"",
+        "sql": "ALTER TABLE \"public\".\"job\" ADD COLUMN \"title_ru\" text DEFAULT '' NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"title_ru\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "job",
+          "title_ru"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.skill_experience.content",
+    "label": "Add column \"content\" to \"skill_experience\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "content",
+        "table": "skill_experience"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"content\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "skill_experience",
+          "content"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"content\"",
+        "sql": "ALTER TABLE \"public\".\"skill_experience\" ADD COLUMN \"content\" text DEFAULT '' NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"content\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "skill_experience",
+          "content"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.skill_experience.content_ru",
+    "label": "Add column \"content_ru\" to \"skill_experience\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "content_ru",
+        "table": "skill_experience"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"content_ru\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "skill_experience",
+          "content_ru"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"content_ru\"",
+        "sql": "ALTER TABLE \"public\".\"skill_experience\" ADD COLUMN \"content_ru\" text DEFAULT '' NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"content_ru\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "skill_experience",
+          "content_ru"
+        ]
+      }
+    ]
+  }
+]

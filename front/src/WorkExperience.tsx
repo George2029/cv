@@ -37,9 +37,20 @@ export function WorkExperience({
       </div>
 
       {job.experiences.map(
-        ({ skillName, shareOfJob }: SkillExperienceWithTranslation) => {
+        ({
+          skillName,
+          shareOfJob,
+          content,
+        }: SkillExperienceWithTranslation) => {
           return (
-            <div key={skillName} className="w-20">
+            <div key={skillName} className="w-20 relative group cursor-pointer">
+              <div
+                id="wk_exp"
+                className="text-xs w-sm h-50 absolute flex justify-center items-center inset-0 left-30 -top-60 hidden group-hover:flex"
+              >
+                <div>{content}</div>
+              </div>
+
               <div
                 className="border"
                 style={{ height: `${shareOfJob * 5 - 24}px` }}

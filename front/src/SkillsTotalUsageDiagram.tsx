@@ -2,11 +2,13 @@ import { calcHeight } from "./calcHeight";
 
 export function SkillsTotalUsageDiagram({
   stats,
+  isLangRu,
 }: {
   stats: Record<
     string,
     { totalTime: number; percentageShare: string; share: number }
   >;
+  isLangRu: boolean;
 }) {
   const sorted = Object.entries(stats).sort((a, b) => b[1].share - a[1].share);
   const shares = sorted.map((a) => a[1].share);
@@ -32,7 +34,10 @@ export function SkillsTotalUsageDiagram({
         lastBase = 100 - x1 * 2;
       }
 
-      const dy = calcHeight({ lastBase, share: cv });
+      const dy = calcHeight({
+        lastBase,
+        share: cv,
+      });
       console.log(`dy:`, dy);
       const dx = dy / 2;
 
@@ -98,7 +103,7 @@ export function SkillsTotalUsageDiagram({
 
       {...trapezoidsData.map(({ x1, y1, x2, y2, x3, y3, x4, y4 }, i) => {
         return (
-          <g className="group">
+          <g className="group cursor-pointer">
             <path
               d={`M${x1} ${y1} L${x2} ${y2} L${x3} ${y3} L${x4} ${y4} Z`}
               strokeWidth={0.5}
@@ -109,14 +114,15 @@ export function SkillsTotalUsageDiagram({
 
             <text
               x={textStartCoordinates[i][0]}
-              y={textStartCoordinates[i][1] + 4}
-              fontSize={2}
+              y={textStartCoordinates[i][1] + 2.5}
+              fontSize={1.7}
               textAnchor="middle"
               dominantBaseline="middle"
               fill="black"
               className="hidden group-hover:block italic"
             >
-              {Math.round(totalTime[i] / (1000 * 60 * 60))} hours
+              {Math.round(totalTime[i] / (1000 * 60 * 60))}{" "}
+              {isLangRu ? "часов" : "hours"}
             </text>
           </g>
         );

@@ -11,6 +11,19 @@
 // ah-h^2/2 = kS
 // h^2 - 2ah + 2kS = 0
 //
+// h^2 - 2ah + 10000k = 0
+// D = b^2-4ac
+// D = (-2a)^2 - 40000k
+// h1,h2 = (-b +- sqrt(D) / 2a
+// h1,h2 = (2a +- sqrt(4a^2 - 40000*k)) / 2)
+// h1,h2 = a +- sqrt(a^2 - 10000*k)
+//
+// b = a - h; b >= 0
+// h1 into b:
+// a - (a+sqrt(a^2-10000k)) = a-sqrt(a^2-10000k)
+// h2 into b:
+// a - (a-sqrt(a^2-10000k)) = a+sqrt(a^2-10000k) <- could never be below zero
+//
 //
 //
 
@@ -23,10 +36,9 @@ export function calcHeight({
 }): number {
   console.log(`share:`, share);
   console.log(`lastBase:`, lastBase);
-  let h = Math.sqrt(Math.pow(lastBase, 2) - 10000 * share) + lastBase;
-  let h2 = lastBase - Math.sqrt(Math.pow(lastBase, 2) - 10000 * share);
-  console.log(`h:`, h);
-  console.log(`h2:`, h2);
 
-  return h < 0 || h > 100 ? h2 : h > h2 ? h2 : h;
+  const a = Math.trunc(lastBase * 1_000) / 1_000;
+  const k = Math.trunc(share * 1_000) / 1_000;
+  const h = a - Math.sqrt(Math.pow(a, 2) - 10_000 * k);
+  return h;
 }

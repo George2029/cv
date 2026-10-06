@@ -44,7 +44,15 @@ export default function App() {
       const {
         content,
         contentRu,
-        job: { id: jobId, title, startedAt, endedAt, content: description },
+        job: {
+          id: jobId,
+          title,
+          titleRu,
+          startedAt,
+          endedAt,
+          content: description,
+          contentRu: descriptionRu,
+        },
         skill: { name: skillName },
         shareOfJob,
       } = cv;
@@ -56,11 +64,11 @@ export default function App() {
       };
 
       pr[jobId] ??= {
-        title,
+        title: isLangRu ? titleRu : title,
         experiences: [],
         startedAt,
         endedAt,
-        description,
+        description: isLangRu ? descriptionRu : description,
       };
       pr[jobId].experiences.push(exp);
 
@@ -162,14 +170,19 @@ export default function App() {
 
       <div id="skills_usage" className="max-w-5xl mx-auto h-screen">
         <h1 className="text-center font-bold mt-10 mb-20">
-          Skills Total Usage
+          {isLangRu ? "Общее Использование Навыков" : "Skills Total Usage"}
         </h1>
         <div className="mx-auto w-fit">
-          <SkillsTotalUsageDiagram stats={skillsUsageStats} />
+          <SkillsTotalUsageDiagram
+            isLangRu={isLangRu}
+            stats={skillsUsageStats}
+          />
         </div>
       </div>
       <div id="skills_rating" className="max-w-2xl mx-auto h-screen">
-        <h1 className="text-center font-bold mt-10 mb-20">Skills Rating</h1>
+        <h1 className="text-center font-bold mt-10 mb-20">
+          {isLangRu ? "Рейтинг Навыков" : "Skills Rating"}
+        </h1>
 
         <div>
           {Object.entries(skills).map(([skillName, level]) => {

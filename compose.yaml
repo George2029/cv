@@ -14,6 +14,7 @@ services:
     container_name: my-backend
     build:
       context: .
+      network: host
     env_file:
       - ./.prod.env
     networks:
@@ -25,6 +26,7 @@ services:
     container_name: my-reverse-proxy
     build:
       context: ./front
+      network: host
     ports:
       - ${NGINX_PORT:-3000}:${NGINX_PORT:-3000}
     networks:

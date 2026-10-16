@@ -3,5 +3,4 @@ dist/
 *.env
 /.alchemy
 /.prisma-composer
-front/nginx_template
 .DS_Store

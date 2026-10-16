@@ -12,6 +12,7 @@ services:
 
   backend:
     container_name: my-backend
+    image: ghcr.io/george2029/cv-backend:latest
     build:
       context: .
     env_file:
@@ -23,6 +24,7 @@ services:
 
   nginx:
     container_name: my-reverse-proxy
+    image: ghcr.io/george2029/cv-nginx:latest
     build:
       context: ./front
     ports:

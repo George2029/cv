@@ -10,7 +10,7 @@
 
     "contract:emit": "export $(cat .local.env) && prisma contract emit",
     "db:init": "export $(cat .local.env)  && prisma db init",
-    "db:reset": "export $(cat .local.env) && psql $DATABASE_URL -c 'DROP SCHEMA public CASCADE; CREATE SCHEMA public; DROP SCHEMA prisma_contract CASCADE;' && npm run migrate && npm run seed-init",
+    "db:reset": "export $(cat .local.env) && psql $DATABASE_URL -c 'DROP SCHEMA public CASCADE; CREATE SCHEMA public; DROP SCHEMA IF EXISTS prisma_contract CASCADE;' && npm run migrate && npm run seed-init",
     "db:update": "export $(cat .local.env) && prisma db update",
     "db:verify": "export $(cat .local.env) && prisma db verify",
     "migrate": "export $(cat .local.env) && prisma db migrate --to=db",

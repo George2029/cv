@@ -1,0 +1,24 @@
+name: Deploy
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger deploy webhook
+        env:
+          URL: ${{ secrets.DEPLOY_WEBHOOK_URL }}
+          SECRET: ${{ secrets.DEPLOY_WEBHOOK_SECRET }}
+        run: |
+          payload=$(jq -nc --arg ref "$GITHUB_REF" --arg sha "$GITHUB_SHA" '{ref:$ref, sha:$sha}')
+          sig="sha256=$(printf '%s' "$payload" | openssl dgst -sha256 -hmac "$SECRET" | awk '{print $NF}')"
+          curl -fsS --max-time 30 -X POST "$URL" \
+            -H "Content-Type: application/json" \
+            -H "X-Signature: $sig" \
+            -d "$payload"

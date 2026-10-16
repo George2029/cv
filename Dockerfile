@@ -7,7 +7,7 @@ WORKDIR /app
 RUN --mount=type=cache,target=/root/.npm \
      --mount=type=bind,source=package.json,target=package.json \
      --mount=type=bind,source=package-lock.json,target=package-lock.json \
-     npm ci
+     npm ci --fetch-retries=5 --fetch-retry-mintimeout=20000 --fetch-retry-maxtimeout=120000
 
 # Copy the source code into the container and compile TypeScript.
 COPY . .
@@ -22,7 +22,7 @@ WORKDIR /app
 RUN --mount=type=cache,target=/root/.npm \
     --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
-    npm ci --omit=dev
+    npm ci --fetch-retries=5 --fetch-retry-mintimeout=20000 --fetch-retry-maxtimeout=120000 --omit=dev
 
 # Runner stage: minimal runtime image with compiled app and production deps.
 FROM node:24-alpine3.23 AS runner

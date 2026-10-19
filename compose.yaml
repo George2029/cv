@@ -1,5 +1,6 @@
 services:
   db:
+    restart: unless-stopped
     image: postgres:17-alpine
     command: postgres -c log_min_duration_statement=0
     container_name: my-database
@@ -11,6 +12,7 @@ services:
       - my-network
 
   backend:
+    restart: unless-stopped
     container_name: my-backend
     image: ghcr.io/george2029/cv-backend:latest
     build:
@@ -23,6 +25,7 @@ services:
       - db
 
   nginx:
+    restart: unless-stopped
     container_name: my-reverse-proxy
     image: ghcr.io/george2029/cv-nginx:latest
     build:
